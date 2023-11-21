@@ -1,10 +1,13 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { SignUpDto } from './dtos/sign-up.dto';
 import { SignInDto } from 'src/controllers/dtos/sign-in.dto';
 import { User } from 'src/entities/user.entity';
 import { Serializer } from 'src/controllers/decorators/serializer.decorator';
 import { LocalGuard } from './guards/local.guard';
+import { RtGuard } from './guards/rt.guard';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { AtGuard } from './guards/at.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -24,5 +27,18 @@ export class AuthController {
 		const { username } = dto;
 
 		return await this.authService.signIn(username);
+	}
+
+	@Post('/signout')
+	@UseGuards(AtGuard)
+	@HttpCode(HttpStatus.NO_CONTENT)
+	async signOut(@CurrentUser() user: User) {
+		return await this.authService.signOut(user);
+	}
+
+	@Post('refresh')
+	@UseGuards(RtGuard)
+	refresh(@CurrentUser() user: User) {
+		return this.authService.refesh(user);
 	}
 }
