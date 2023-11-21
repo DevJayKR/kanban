@@ -6,6 +6,10 @@ import { AuthGuard } from '@nestjs/passport';
 export class AtGuard extends AuthGuard('access-token') {
 	handleRequest(err: any, user: any, info: any, context: ExecutionContext, status: number) {
 		if (info) {
+			if (info.message == 'No auth token') {
+				throw new BadRequestException('토큰이 없습니다.');
+			}
+
 			if (info instanceof Array && info[0].message == 'No auth token') {
 				throw new BadRequestException('토큰이 없습니다.');
 			}
