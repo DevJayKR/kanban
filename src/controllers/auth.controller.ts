@@ -2,7 +2,7 @@ import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs
 import { AuthService } from '../services/auth.service';
 import { SignUpDto } from './dtos/sign-up.dto';
 import { SignInDto } from 'src/controllers/dtos/sign-in.dto';
-import { User } from 'src/entities/user.entity';
+import { UserEntity } from 'src/entities/user.entity';
 import { Serializer } from 'src/controllers/decorators/serializer.decorator';
 import { LocalGuard } from './guards/local.guard';
 import { RtGuard } from './guards/rt.guard';
@@ -14,7 +14,7 @@ export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
 	@Post('/signup')
-	@Serializer(User)
+	@Serializer(UserEntity)
 	async signUp(@Body() dto: SignUpDto) {
 		const { username, password } = dto;
 
@@ -32,13 +32,13 @@ export class AuthController {
 	@Post('/signout')
 	@UseGuards(AtGuard)
 	@HttpCode(HttpStatus.NO_CONTENT)
-	async signOut(@CurrentUser() user: User) {
+	async signOut(@CurrentUser() user: UserEntity) {
 		return await this.authService.signOut(user);
 	}
 
 	@Post('refresh')
 	@UseGuards(RtGuard)
-	refresh(@CurrentUser() user: User) {
+	refresh(@CurrentUser() user: UserEntity) {
 		return this.authService.refesh(user);
 	}
 }

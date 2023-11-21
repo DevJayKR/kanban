@@ -1,7 +1,7 @@
-import { User as TUser } from '@prisma/client';
+import { User } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 
-export class User implements TUser {
+export class UserEntity implements User {
 	id: number;
 	username: string;
 
