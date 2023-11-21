@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { SignUpDto } from './dtos/sign-up.dto';
 import { SignInDto } from 'src/controllers/dtos/sign-in.dto';
 import { User } from 'src/entities/user.entity';
-import { Serializer } from 'src/utils/serializer.decorator';
+import { Serializer } from 'src/controllers/decorators/serializer.decorator';
 import { LocalGuard } from './guards/local.guard';
 
 @Controller('auth')

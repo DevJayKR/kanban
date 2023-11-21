@@ -1,7 +1,7 @@
 import { Logger, Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { PrismaClientExceptionFilter } from 'src/utils/prisma-exception.filter';
-import { TransformInterceptor } from 'src/utils/transform.interceptor';
+import { TransformInterceptor } from 'src/controllers/interceptors/transform.interceptor';
 
 @Module({
 	providers: [
