@@ -12,12 +12,13 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  username     String  @unique
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
   password     String
   refreshToken String?
-  teams        Team[]  @relation(name: "TeamMembers")
-  teamLeads    Team[]  @relation(name: "TeamLeaders")
+  teams        Team[]   @relation(name: "TeamMembers")
+  teamLeads    Team[]   @relation(name: "TeamLeaders")
+  invite       Invite[]
 }
 
 model Team {
@@ -28,4 +29,14 @@ model Team {
   leader    User?    @relation("TeamLeaders", fields: [leaderId], references: [id])
   leaderId  Int?
   members   User[]   @relation("TeamMembers")
+  invite    Invite[]
+}
+
+model Invite {
+  id        Int     @id @default(autoincrement())
+  team      Team    @relation(fields: [teamId], references: [id])
+  teamId    Int
+  invitee   User    @relation(fields: [inviteeId], references: [id])
+  inviteeId Int
+  accept    Boolean @default(false)
 }

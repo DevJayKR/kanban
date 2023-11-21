@@ -27,6 +27,13 @@ export class UserService {
 		});
 	}
 
+	async findOneWithRelation(where: Prisma.UserWhereUniqueInput, include?: Prisma.UserInclude) {
+		return await this.prisma.user.findUnique({
+			where,
+			include,
+		});
+	}
+
 	async findOne(where: Prisma.UserWhereUniqueInput, select?: Prisma.UserSelect) {
 		return await this.prisma.user.findUnique({ select, where });
 	}
