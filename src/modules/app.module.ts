@@ -6,6 +6,7 @@ import { AuthModule } from './auth.module';
 import { UserModule } from './user.module';
 import { ProvideModule } from './provide.module';
 import jwtConfiguration from 'src/configs/jwt.configuration';
+import { TeamModule } from './team.module';
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import jwtConfiguration from 'src/configs/jwt.configuration';
 		AuthModule,
 		UserModule,
 		ProvideModule,
+		TeamModule,
 	],
 })
 export class AppModule {}
