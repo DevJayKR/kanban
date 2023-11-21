@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { EncryptionHelper } from 'src/helpers/encryption.helper';
 import { PrismaService } from 'src/services/prisma.service';
@@ -31,6 +31,13 @@ export class UserService {
 		return await this.prisma.user.findUnique({ select, where });
 	}
 
+	async update(where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateManyMutationInput) {
+		return await this.prisma.user.update({
+			where,
+			data,
+		});
+	}
+
 	async validateCredentials(username: string, password: string) {
 		const user = await this.findOne({ username });
 
@@ -40,8 +47,10 @@ export class UserService {
 
 		const matched = await this.encryptionHelper.compare(password, user.password);
 
-		if (matched) {
-			return user;
+		if (!matched) {
+			throw new BadRequestException('비밀번호가 일치하지 않습니다.');
 		}
+
+		return user;
 	}
 }
