@@ -5,12 +5,14 @@ import { PrismaModule } from './prisma.module';
 import { AuthModule } from './auth.module';
 import { UserModule } from './user.module';
 import { ProvideModule } from './provide.module';
+import jwtConfiguration from 'src/configs/jwt.configuration';
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
 			isGlobal: true,
 			validationSchema,
+			load: [jwtConfiguration],
 		}),
 		PrismaModule,
 		AuthModule,
