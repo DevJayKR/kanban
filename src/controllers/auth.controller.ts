@@ -1,9 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { SignUpDto } from './dtos/sign-up.dto';
 import { SignInDto } from 'src/controllers/dtos/sign-in.dto';
 import { User } from 'src/entities/user.entity';
 import { Serializer } from 'src/utils/serializer.decorator';
+import { LocalGuard } from './guards/local.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -18,10 +19,10 @@ export class AuthController {
 	}
 
 	@Post('/signin')
-	@Serializer(User)
+	@UseGuards(LocalGuard)
 	async signIn(@Body() dto: SignInDto) {
-		const { username, password } = dto;
+		const { username } = dto;
 
-		return await this.authService.signIn(username, password);
+		return await this.authService.signIn(username);
 	}
 }
