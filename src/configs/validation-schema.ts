@@ -8,8 +8,8 @@ export const validationSchema = Joi.object({
 	DATABASE_URL: Joi.string().required(),
 
 	JWT_ACCESS_SECRET_KEY: Joi.string().required(),
-	JwT_ACCESS_EXPIRATION_TIME: Joi.number().required(),
+	JWT_ACCESS_EXPIRATION_TIME: Joi.number().required(),
 
 	JWT_REFRESH_SECRET_KEY: Joi.string().required(),
-	JwT_REFRESH_EXPIRATION_TIME: Joi.number().required(),
+	JWT_REFRESH_EXPIRATION_TIME: Joi.number().required(),
 });
