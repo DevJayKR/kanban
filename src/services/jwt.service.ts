@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService as Jwt } from '@nestjs/jwt';
-import { TokenPayload } from './token-payload.interface';
+import { TokenPayload } from '../helpers/token-payload.interface';
 import jwtConfiguration from 'src/configs/jwt.configuration';
 import { ConfigType } from '@nestjs/config';
 
 @Injectable()
-export class JwtHelper {
+export class JwtService {
 	constructor(
 		private readonly jwt: Jwt,
 		@Inject(jwtConfiguration.KEY)
