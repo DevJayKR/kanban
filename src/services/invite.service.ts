@@ -6,7 +6,13 @@ import { Prisma } from '@prisma/client';
 export class InviteService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	async invite(teamId: number, inviteeId: number) {
+	async invite(teamId: number, inviteeId: number, invitorId: number) {
+		const isTeamLeader = await this.validateTeamLeader(teamId, invitorId);
+
+		if (!isTeamLeader) {
+			throw new BadRequestException('팀의 리더만 초대할 수 있습니다.');
+		}
+
 		const exist = await this.findFirst({
 			teamId,
 			inviteeId,
@@ -62,6 +68,17 @@ export class InviteService {
 				id: inviteId,
 				invitee: {
 					id: inviteeId,
+				},
+			},
+		});
+	}
+
+	private async validateTeamLeader(teamId: number, invitorId: number) {
+		return await this.prisma.invite.findFirst({
+			where: {
+				team: {
+					id: teamId,
+					leaderId: invitorId,
 				},
 			},
 		});

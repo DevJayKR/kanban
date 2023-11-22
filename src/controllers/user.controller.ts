@@ -21,7 +21,7 @@ export class UserController {
 				id,
 			},
 			{
-				invite: {
+				invites: {
 					where: {
 						accept: false,
 					},

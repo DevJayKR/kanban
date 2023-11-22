@@ -1,10 +1,13 @@
 {
   "name": "kanban",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Kanban board backend with NestJS",
+  "author": "DevJayKR",
   "private": true,
   "license": "UNLICENSED",
+  "repository": {
+    "url": "https://github.com/DevJayKR/kanban"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
@@ -19,8 +22,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./tests/jest-e2e.json",
-    "prisma:format": "npx prisma format",
-    "prisma:generate": "npx prisma generate"
+    "prisma:format": "pnpx prisma format",
+    "prisma:generate": "pnpx prisma generate"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
