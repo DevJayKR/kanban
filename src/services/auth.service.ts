@@ -1,14 +1,14 @@
 import { TokenPayload } from './../helpers/token-payload.interface';
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { JwtHelper } from 'src/helpers/jwt.helper';
 import { UserService } from 'src/services/user.service';
+import { JwtService } from './jwt.service';
 
 @Injectable()
 export class AuthService {
 	constructor(
 		private readonly userService: UserService,
-		private readonly jwtHelper: JwtHelper,
+		private readonly jwtService: JwtService,
 	) {}
 
 	async signUp(username: string, password: string) {
@@ -19,8 +19,8 @@ export class AuthService {
 		const user = await this.userService.findOne({ username });
 		const payload = this.createPayload(user);
 
-		const accessToken = this.jwtHelper.generateAccessToken(payload);
-		const refreshToken = this.jwtHelper.generateRefreshToken(payload);
+		const accessToken = this.jwtService.generateAccessToken(payload);
+		const refreshToken = this.jwtService.generateRefreshToken(payload);
 
 		await this.updateUserRefreshToken(user, refreshToken);
 
@@ -32,7 +32,7 @@ export class AuthService {
 
 	async refesh(user: User) {
 		const payload = this.createPayload(user);
-		return this.jwtHelper.generateAccessToken(payload);
+		return this.jwtService.generateAccessToken(payload);
 	}
 
 	async signOut(user: User) {
