@@ -7,6 +7,7 @@ import { UserModule } from './user.module';
 import { ProvideModule } from './provide.module';
 import jwtConfiguration from 'src/configs/jwt.configuration';
 import { TeamModule } from './team.module';
+import { BoardModule } from './board.module';
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { TeamModule } from './team.module';
 		UserModule,
 		ProvideModule,
 		TeamModule,
+		BoardModule,
 	],
 })
 export class AppModule {}
