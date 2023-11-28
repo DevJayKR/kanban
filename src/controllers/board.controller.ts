@@ -5,7 +5,7 @@ import { BoardService } from 'src/services/board.service';
 import { TeamMemberGuard } from './guards/team.guard';
 import { UpdateColumnOrderDto } from './dtos/update-column-order.dto';
 import { CreateTicketDto } from './dtos/create-ticket.dto';
-import { ParseColumnIdPipe } from './pipes/validation-column-id.pipe';
+import { ParseColumnIdPipe } from './pipes/parse-column-id.pipe';
 
 @Controller('board')
 export class BoardController {
