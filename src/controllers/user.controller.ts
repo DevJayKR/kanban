@@ -26,7 +26,11 @@ export class UserController {
 						accept: false,
 					},
 				},
-				teams: true,
+				teams: {
+					select: {
+						name: true,
+					},
+				},
 				teamLeads: true,
 			},
 		);

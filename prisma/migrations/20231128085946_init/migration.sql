@@ -50,7 +50,7 @@ CREATE TABLE "Ticket" (
     "columnId" INTEGER NOT NULL,
     "order" INTEGER NOT NULL,
     "infoId" INTEGER NOT NULL,
-    "assigneeId" INTEGER NOT NULL,
+    "assigneeId" INTEGER,
 
     CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
 );
@@ -61,7 +61,7 @@ CREATE TABLE "TicketInfo" (
     "title" TEXT NOT NULL,
     "tag" "Tag" NOT NULL,
     "dueTime" DOUBLE PRECISION,
-    "dueDate" TIMESTAMP(3) NOT NULL,
+    "dueDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -105,7 +105,7 @@ ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_columnId_fkey" FOREIGN KEY ("columnI
 ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_infoId_fkey" FOREIGN KEY ("infoId") REFERENCES "TicketInfo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_assigneeId_fkey" FOREIGN KEY ("assigneeId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_assigneeId_fkey" FOREIGN KEY ("assigneeId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_TeamMembers" ADD CONSTRAINT "_TeamMembers_A_fkey" FOREIGN KEY ("A") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;

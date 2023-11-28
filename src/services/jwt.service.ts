@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { JwtService as Jwt } from '@nestjs/jwt';
+import { JwtService as Jwt, JwtVerifyOptions } from '@nestjs/jwt';
 import { TokenPayload } from '../helpers/token-payload.interface';
 import jwtConfiguration from 'src/configs/jwt.configuration';
 import { ConfigType } from '@nestjs/config';
@@ -24,5 +24,9 @@ export class JwtService {
 			secret: this.config.refresh.secretKey,
 			expiresIn: this.config.refresh.expirationTimeAsSecond,
 		});
+	}
+
+	verify(token: string, options: JwtVerifyOptions) {
+		return this.jwt.verify(token, options);
 	}
 }

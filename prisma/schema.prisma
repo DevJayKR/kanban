@@ -62,17 +62,17 @@ model Ticket {
   info       TicketInfo @relation(fields: [infoId], references: [id])
   infoId     Int
   assignee   User?      @relation(fields: [assigneeId], references: [id])
-  assigneeId Int
+  assigneeId Int?
 }
 
 model TicketInfo {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String
   tag       Tag
   dueTime   Float?
-  dueDate   DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  dueDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   ticket    Ticket[]
 }
 
