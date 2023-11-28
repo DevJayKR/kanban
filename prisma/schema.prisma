@@ -18,7 +18,8 @@ model User {
   refreshToken String?
   teams        Team[]   @relation(name: "TeamMembers")
   teamLeads    Team[]   @relation(name: "TeamLeaders")
-  invite       Invite[]
+  invites      Invite[]
+  tickets      Ticket[]
 }
 
 model Team {
@@ -29,7 +30,8 @@ model Team {
   leader    User?    @relation("TeamLeaders", fields: [leaderId], references: [id])
   leaderId  Int?
   members   User[]   @relation("TeamMembers")
-  invite    Invite[]
+  invites   Invite[]
+  columns   Column[]
 }
 
 model Invite {
@@ -39,4 +41,46 @@ model Invite {
   invitee   User    @relation(fields: [inviteeId], references: [id])
   inviteeId Int
   accept    Boolean @default(false)
+}
+
+model Column {
+  id        Int      @id @default(autoincrement())
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    Int
+  name      String
+  tickets   Ticket[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Int
+}
+
+model Ticket {
+  id         Int        @id @default(autoincrement())
+  column     Column     @relation(fields: [columnId], references: [id])
+  columnId   Int
+  order      Int
+  info       TicketInfo @relation(fields: [infoId], references: [id])
+  infoId     Int
+  assignee   User?      @relation(fields: [assigneeId], references: [id])
+  assigneeId Int
+}
+
+model TicketInfo {
+  id        Int      @id @default(autoincrement())
+  title     String
+  tag       Tag
+  dueTime   Float?
+  dueDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ticket    Ticket[]
+}
+
+enum Tag {
+  Frontend
+  Backend
+  Design
+  QA
+  PM
+  Document
 }
