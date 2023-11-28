@@ -1,4 +1,4 @@
-import { TokenPayload } from './../helpers/token-payload.interface';
+import { TokenPayload } from '../utils/token-payload.interface';
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserService } from 'src/services/user.service';
