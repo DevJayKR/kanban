@@ -129,11 +129,13 @@ export class BoardService {
 		});
 	}
 
+	// TODO: 여기 작업
 	async changeTicketOrder() {}
 
 	private async isExistColumnName(teamId: number, name: string) {
 		const exist = await this.prisma.team.count({
 			where: {
+				id: teamId,
 				columns: {
 					some: {
 						name,

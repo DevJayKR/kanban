@@ -1,0 +1,6 @@
+.git
+.github
+dist
+README.md
+node_modules
+prisma/migrations
