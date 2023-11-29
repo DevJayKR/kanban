@@ -3,12 +3,10 @@ import { BoardController } from 'src/controllers/board.controller';
 import { BoardService } from 'src/services/board.service';
 import { PrismaModule } from './prisma.module';
 import { TeamService } from 'src/services/team.service';
-import { JwtService } from 'src/services/jwt.service';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-	imports: [PrismaModule, JwtModule],
+	imports: [PrismaModule],
 	controllers: [BoardController],
-	providers: [BoardService, TeamService, JwtService],
+	providers: [BoardService, TeamService],
 })
 export class BoardModule {}

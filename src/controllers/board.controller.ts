@@ -2,7 +2,7 @@ import { Body, Controller, Param, ParseIntPipe, Post, UseGuards, Get, Patch } fr
 import { CreateColumnDto } from './dtos/create-column.dto';
 import { AtGuard } from './guards/at.guard';
 import { BoardService } from 'src/services/board.service';
-import { TeamMemberGuard } from './guards/team.guard';
+import { TeamMemberGuard } from './guards/team-member.guard';
 import { UpdateColumnOrderDto } from './dtos/update-column-order.dto';
 import { CreateTicketDto } from './dtos/create-ticket.dto';
 import { ParseColumnIdPipe } from './pipes/parse-column-id.pipe';
