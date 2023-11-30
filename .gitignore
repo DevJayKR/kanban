@@ -3,6 +3,9 @@
 /node_modules
 prisma/migrations
 
+# environment
+.env
+
 # Logs
 logs
 *.log
