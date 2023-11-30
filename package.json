@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "nest build",
+    "build:docker": "docker-compose build",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -23,8 +24,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./tests/jest-e2e.json",
     "prisma:format": "pnpm prisma format",
-    "prisma:migrate": "pnpm prisma migrate dev -n init",
-    "docker:build": "docker-compose build"
+    "migrate:local": "pnpm prisma migrate dev -n init",
+    "migrate:prod": "npx prisma migrate prod -n init"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
