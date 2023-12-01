@@ -56,6 +56,7 @@ export class BoardService {
 		});
 	}
 
+	// TODO: 만약 현재 column count < toBe 면 toBe = column count
 	async changeColumnOrder(column: Column, toBe: number, teamId: number) {
 		if (column.order == toBe) {
 			return;

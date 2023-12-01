@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client';
 export class TeamService {
 	constructor(private readonly prisma: PrismaService) {}
 
+	// TODO: 인바이티 ID가 존재하는 유저인지 검증 필요
 	async invite(teamId: number, inviteeId: number) {
 		return await this.prisma.invite.create({
 			data: {
@@ -19,6 +20,7 @@ export class TeamService {
 		});
 	}
 
+	// TODO: transaction 적용
 	async accept(inviteId: number, inviteeId: number) {
 		const invite = await this.prisma.invite.update({
 			data: {
