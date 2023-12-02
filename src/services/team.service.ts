@@ -1,4 +1,4 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
 
@@ -6,45 +6,80 @@ import { Prisma } from '@prisma/client';
 export class TeamService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	// TODO: 인바이티 ID가 존재하는 유저인지 검증 필요
 	async invite(teamId: number, inviteeId: number) {
-		return await this.prisma.invite.create({
-			data: {
-				team: {
-					connect: { id: teamId },
+		return await this.prisma.$transaction(async (tx) => {
+			const exist = await tx.user.findFirst({
+				where: {
+					id: inviteeId,
 				},
-				invitee: {
-					connect: { id: inviteeId },
+			});
+
+			if (!exist) {
+				throw new NotFoundException('존재하지 않는 유저는 초대할 수 없습니다.');
+			}
+
+			const alreadyAccpeted = await tx.invite.findFirst({
+				where: {
+					inviteeId,
+					teamId,
 				},
-			},
+			});
+
+			if (alreadyAccpeted) {
+				throw new BadRequestException('이미 초대한 유저입니다.');
+			}
+
+			return await tx.invite.create({
+				data: {
+					team: {
+						connect: { id: teamId },
+					},
+					invitee: {
+						connect: { id: inviteeId },
+					},
+				},
+			});
 		});
 	}
 
-	// TODO: transaction 적용
 	async accept(inviteId: number, inviteeId: number) {
-		const invite = await this.prisma.invite.update({
-			data: {
-				accept: true,
-			},
-			where: {
-				id: inviteId,
-				accept: false,
-				inviteeId,
-			},
-		});
+		return await this.prisma.$transaction(async (tx) => {
+			const exist = await tx.invite.findFirst({
+				where: {
+					AND: [{ id: inviteId }, { inviteeId }],
+				},
+			});
 
-		await this.prisma.team.update({
-			where: { id: invite.teamId },
-			data: {
-				members: {
-					connect: {
-						id: inviteeId,
+			if (!exist) {
+				throw new NotFoundException('존재하지 않는 초대입니다.');
+			}
+
+			if (exist.accept) {
+				throw new BadRequestException('이미 수락한 초대입니다.');
+			}
+
+			const invite = await tx.invite.update({
+				data: { accept: true },
+				where: {
+					id: inviteId,
+					accept: false,
+					inviteeId,
+				},
+			});
+
+			await tx.team.update({
+				where: { id: invite.teamId },
+				data: {
+					members: {
+						connect: {
+							id: inviteeId,
+						},
 					},
 				},
-			},
-		});
+			});
 
-		return invite;
+			return invite;
+		});
 	}
 
 	async create(userId: number, name: string) {

@@ -1,6 +1,6 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { Column, Tag } from '@prisma/client';
+import { Column, Tag, Ticket } from '@prisma/client';
 
 @Injectable()
 export class BoardService {
@@ -56,13 +56,22 @@ export class BoardService {
 		});
 	}
 
-	// TODO: 만약 현재 column count < toBe 면 toBe = column count
 	async changeColumnOrder(column: Column, toBe: number, teamId: number) {
 		if (column.order == toBe) {
 			return;
 		}
 
 		await this.prisma.$transaction(async (prisma) => {
+			const columnCount = await this.getColumnsCount(teamId);
+
+			if (toBe <= 0) {
+				toBe = 1;
+			}
+
+			if (columnCount < toBe) {
+				toBe = columnCount;
+			}
+
 			await prisma.column.updateMany({
 				where: {
 					teamId: teamId,
@@ -98,7 +107,7 @@ export class BoardService {
 	}
 
 	async createTicket(column: Column, title: string, tag: Tag) {
-		const count = await this.getTicketsCount(column);
+		const count = await this.getTicketsCount(column.id);
 
 		return await this.prisma.ticket.create({
 			data: {
@@ -130,8 +139,93 @@ export class BoardService {
 		});
 	}
 
-	// TODO: 여기 작업
-	async changeTicketOrder() {}
+	async changeTicketOrder(ticket: Ticket, toBe: number, toBeColumnId?: number) {
+		if (toBe <= 0) {
+			toBe = 1;
+		}
+
+		return await this.prisma.$transaction(async (tx) => {
+			const ticketCount =
+				ticket.columnId !== toBeColumnId
+					? await this.getTicketsCount(toBeColumnId)
+					: await this.getTicketsCount(ticket.columnId);
+
+			if (ticket.columnId !== toBeColumnId) {
+				// 순서 변경: 다른 컬럼으로 이동할 때
+				await tx.ticket.updateMany({
+					where: {
+						columnId: ticket.columnId,
+						order: {
+							gte: ticket.order,
+						},
+					},
+					data: {
+						order: {
+							increment: -1,
+						},
+					},
+				});
+
+				await tx.ticket.updateMany({
+					where: {
+						columnId: toBeColumnId,
+						order: {
+							gte: toBe,
+						},
+					},
+					data: {
+						order: {
+							increment: 1,
+						},
+					},
+				});
+
+				if (toBe > ticketCount + 1) {
+					throw new BadRequestException('티켓 순서는 티켓 총 갯수에 1을 더한 숫자를 넘을 수 없습니다.');
+				}
+
+				return await tx.ticket.update({
+					where: {
+						id: ticket.id,
+					},
+					data: {
+						order: ticketCount <= 0 ? 1 : toBe,
+						columnId: toBeColumnId,
+					},
+				});
+			} else {
+				// 같은 컬럼 내에서의 순서 변경
+				await tx.ticket.updateMany({
+					where: {
+						columnId: toBeColumnId,
+						order: {
+							gte: Math.min(ticket.order, toBe),
+							lte: Math.max(ticket.order, toBe),
+							not: ticket.order,
+						},
+					},
+					data: {
+						order: {
+							increment: ticket.order < toBe ? -1 : 1,
+						},
+					},
+				});
+
+				if (toBe > ticketCount + 1) {
+					throw new BadRequestException('티켓 순서는 티켓 총 갯수에 1을 더한 숫자를 넘을 수 없습니다.');
+				}
+
+				return await tx.ticket.update({
+					where: {
+						id: ticket.id,
+					},
+					data: {
+						order: toBe,
+					},
+				});
+			}
+		});
+	}
 
 	private async isExistColumnName(teamId: number, name: string) {
 		const exist = await this.prisma.team.count({
@@ -158,10 +252,10 @@ export class BoardService {
 		});
 	}
 
-	private async getTicketsCount(column: Column) {
+	private async getTicketsCount(columnId: number) {
 		return await this.prisma.ticket.count({
 			where: {
-				columnId: column.id,
+				columnId,
 			},
 		});
 	}

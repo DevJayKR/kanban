@@ -6,6 +6,8 @@ import { TeamMemberGuard } from './guards/team-member.guard';
 import { UpdateColumnOrderDto } from './dtos/update-column-order.dto';
 import { CreateTicketDto } from './dtos/create-ticket.dto';
 import { ParseColumnIdPipe } from './pipes/parse-column-id.pipe';
+import { ParseTicketIdPipe } from './pipes/parse.ticket-id.pipe';
+import { UpdateTicketOrderDto } from './dtos/update-ticket-order.dto';
 
 @Controller('board')
 export class BoardController {
@@ -34,6 +36,17 @@ export class BoardController {
 		const { column, toBe } = dto;
 
 		return await this.boardService.changeColumnOrder(column, toBe, teamId);
+	}
+
+	@Patch('/:teamId/ticket/order')
+	@UseGuards(AtGuard, TeamMemberGuard)
+	async changeTicketOrder(
+		@Param('teamId', ParseIntPipe) teamId: number,
+		@Body(ParseTicketIdPipe) dto: UpdateTicketOrderDto,
+	) {
+		const { ticket, toBe, toBeColumnId } = dto;
+
+		return await this.boardService.changeTicketOrder(ticket, toBe, toBeColumnId);
 	}
 
 	@Post('/:teamId/ticket')
