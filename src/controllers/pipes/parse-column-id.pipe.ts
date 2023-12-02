@@ -21,7 +21,7 @@ export class ParseColumnIdPipe implements PipeTransform {
 		});
 
 		if (!column) {
-			throw new NotFoundException('존재하지 않는 컬럼 ID입니다.');
+			throw new NotFoundException('존재하지 않는 컬럼입니다.');
 		}
 
 		return column;

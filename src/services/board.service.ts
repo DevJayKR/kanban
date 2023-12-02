@@ -144,6 +144,8 @@ export class BoardService {
 			toBe = 1;
 		}
 
+		await this.validateChangeTicketOrder(ticket.id, toBeColumnId);
+
 		return await this.prisma.$transaction(async (tx) => {
 			const ticketCount =
 				ticket.columnId !== toBeColumnId
@@ -258,5 +260,45 @@ export class BoardService {
 				columnId,
 			},
 		});
+	}
+
+	private async validateChangeTicketOrder(ticketId: number, columnId: number) {
+		const column = await this.prisma.team.findFirst({
+			select: {
+				id: true,
+			},
+			where: {
+				columns: { some: { id: columnId } },
+			},
+		});
+
+		const ticket = await this.prisma.team.findFirst({
+			select: {
+				id: true,
+			},
+			where: {
+				columns: {
+					some: {
+						tickets: {
+							some: {
+								id: ticketId,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!column) {
+			throw new BadRequestException('존재하지 않는 컬럼입니다.');
+		}
+
+		if (!ticket) {
+			throw new BadRequestException('존재하지 않는 티켓입니다.');
+		}
+
+		if (!(ticket.id == column.id)) {
+			throw new BadRequestException('티켓 이동은 같은 팀의 컬럼에만 가능합니다. 다시 확인해주세요.');
+		}
 	}
 }
