@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Column, Tag, Ticket } from '@prisma/client';
+import { ColumnWithTickets } from 'src/utils/column-with-tickets.type';
 
 @Injectable()
 export class BoardService {
@@ -135,6 +136,41 @@ export class BoardService {
 						dueDate: true,
 					},
 				},
+			},
+		});
+	}
+
+	async deleteColumn(column: ColumnWithTickets) {
+		if (column.tickets.length) {
+			throw new BadRequestException('하위 티켓이 존재하지 않는 컬럼만 삭제할 수 있습니다.');
+		}
+
+		return await this.prisma.column.delete({
+			select: {
+				id: true,
+				name: true,
+			},
+			where: {
+				id: column.id,
+			},
+		});
+	}
+
+	async updateColumn(column: Column, name: string) {
+		if (column.name == name) {
+			return;
+		}
+
+		return await this.prisma.column.update({
+			select: {
+				name: true,
+				id: true,
+			},
+			where: {
+				id: column.id,
+			},
+			data: {
+				name,
 			},
 		});
 	}

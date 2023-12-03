@@ -8,6 +8,10 @@ import { CreateTicketDto } from './dtos/create-ticket.dto';
 import { ParseColumnIdPipe } from './pipes/parse-column-id.pipe';
 import { ParseTicketIdPipe } from './pipes/parse.ticket-id.pipe';
 import { UpdateTicketOrderDto } from './dtos/update-ticket-order.dto';
+import { UpdateColumnDto } from './dtos/update-column.dto';
+import { TeamLeaderGuard } from './guards/team-leader.guard';
+import { DeleteColumnDto } from './dtos/delete-column.dto';
+import { ColumnWithTickets } from 'src/utils/column-with-tickets.type';
 
 @Controller('board')
 export class BoardController {
@@ -36,6 +40,22 @@ export class BoardController {
 		const { column, toBe } = dto;
 
 		return await this.boardService.changeColumnOrder(column, toBe, teamId);
+	}
+
+	@Patch('/:teamId/column')
+	@UseGuards(AtGuard, TeamMemberGuard)
+	async updateColumn(@Body(ParseColumnIdPipe) dto: UpdateColumnDto) {
+		const { column, name } = dto;
+
+		return await this.boardService.updateColumn(column, name);
+	}
+
+	@Delete('/:teamId/column')
+	@UseGuards(AtGuard, TeamLeaderGuard)
+	async deleteColumn(@Body(ParseColumnIdPipe) dto: DeleteColumnDto) {
+		const column = dto.column as ColumnWithTickets;
+
+		return await this.boardService.deleteColumn(column);
 	}
 
 	@Patch('/:teamId/ticket/order')

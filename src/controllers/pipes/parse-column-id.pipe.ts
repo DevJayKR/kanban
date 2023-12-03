@@ -1,12 +1,11 @@
 import { PipeTransform, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma.service';
-import { UpdateColumnOrderDto } from '../dtos/update-column-order.dto';
 
 @Injectable()
 export class ParseColumnIdPipe implements PipeTransform {
 	constructor(private readonly prisma: PrismaService) {}
 
-	async transform(value: UpdateColumnOrderDto) {
+	async transform(value: any) {
 		const { columnId } = value;
 		const column = await this.findColumn(columnId);
 
@@ -17,6 +16,9 @@ export class ParseColumnIdPipe implements PipeTransform {
 		const column = await this.prisma.column.findUnique({
 			where: {
 				id: columnId,
+			},
+			include: {
+				tickets: true,
 			},
 		});
 
