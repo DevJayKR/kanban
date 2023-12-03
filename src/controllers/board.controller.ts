@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe, Post, UseGuards, Get, Patch } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Post, UseGuards, Get, Patch, Delete } from '@nestjs/common';
 import { CreateColumnDto } from './dtos/create-column.dto';
 import { AtGuard } from './guards/at.guard';
 import { BoardService } from 'src/services/board.service';
@@ -55,5 +55,14 @@ export class BoardController {
 		const { column, title, tag } = dto;
 
 		return await this.boardService.createTicket(column, title, tag);
+	}
+
+	@Delete('/:teamId/:ticketId')
+	@UseGuards(AtGuard, TeamMemberGuard)
+	async deleteTicket(
+		@Param('teamId', ParseIntPipe) teamId: number,
+		@Param('ticketId', ParseIntPipe) ticketId: number,
+	) {
+		return await this.boardService.deleteTicket(teamId, ticketId);
 	}
 }
