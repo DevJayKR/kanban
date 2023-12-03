@@ -246,6 +246,27 @@ export class BoardService {
 		}
 	}
 
+	async deleteTicket(teamId: number, ticketId: number) {
+		const ticket = await this.prisma.ticket.findUnique({
+			where: {
+				id: ticketId,
+				column: {
+					teamId: teamId,
+				},
+			},
+		});
+
+		if (!ticket) {
+			throw new BadRequestException('존재하지 않는 티켓입니다.');
+		}
+
+		return await this.prisma.ticket.delete({
+			where: {
+				id: ticketId,
+			},
+		});
+	}
+
 	private async getColumnsCount(teamId: number) {
 		return await this.prisma.column.count({
 			where: {
