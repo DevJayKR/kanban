@@ -1,16 +1,14 @@
 import { Column } from '@prisma/client';
-import { Exclude } from 'class-transformer';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { CustomValidator as CV } from 'src/utils/custom-validator.class';
 
 export class UpdateColumnOrderDto {
-	@IsNumber()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsNumber()
 	columnId: number;
 
-	@IsNumber()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsNumber()
 	toBe: number;
 
-	@Exclude()
 	column: Column;
 }

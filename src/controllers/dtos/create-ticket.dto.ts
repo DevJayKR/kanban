@@ -1,20 +1,18 @@
 import { Column, Tag } from '@prisma/client';
-import { Exclude } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { CustomValidator as CV } from 'src/utils/custom-validator.class';
 
 export class CreateTicketDto {
-	@IsNumber()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsNumber()
 	columnId: number;
 
-	@IsString()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsString()
 	title: string;
 
-	@IsEnum(Tag)
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsEnum(Tag)
 	tag: Tag;
 
-	@Exclude()
 	column: Column;
 }

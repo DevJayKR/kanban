@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { CustomValidator as CV } from './../../utils/custom-validator.class';
 
 export class InviteTeamDto {
-	@IsNumber()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsNumber()
 	inviteeId: number;
 }

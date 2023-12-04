@@ -1,34 +1,30 @@
 import { Tag, Ticket } from '@prisma/client';
-import { Exclude } from 'class-transformer';
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { CustomValidator as CV } from 'src/utils/custom-validator.class';
 
 export class UpdateTicketDto {
-	@IsOptional()
-	@IsNumber()
-	assigneeId?: number;
-
-	@IsNumber()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsNumber()
 	ticketId: number;
 
-	@IsOptional()
-	@IsString()
+	@CV.IsOptional()
+	@CV.IsNumber()
+	assigneeId?: number;
+
+	@CV.IsOptional()
+	@CV.IsString()
 	title?: string;
 
-	@IsOptional()
-	@IsEnum(Tag)
+	@CV.IsOptional()
+	@CV.IsEnum(Tag)
 	tag: Tag;
 
-	@IsOptional()
-	@IsDateString({
-		strictSeparator: true,
-	})
+	@CV.IsOptional()
+	@CV.IsDateString()
 	dueDate: string;
 
-	@IsOptional()
-	@IsNumber()
+	@CV.IsOptional()
+	@CV.IsNumber()
 	dueTime: number;
 
-	@Exclude()
 	ticket: Ticket;
 }

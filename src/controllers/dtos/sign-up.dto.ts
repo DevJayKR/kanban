@@ -1,12 +1,10 @@
 import { Prisma } from '@prisma/client';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { CustomValidator as CV } from 'src/utils/custom-validator.class';
 
 export class SignUpDto implements Prisma.UserCreateInput {
-	@IsString()
-	@IsNotEmpty()
+	@CV.IsUsername()
 	username: string;
 
-	@IsString()
-	@IsNotEmpty()
+	@CV.IsPassword()
 	password: string;
 }
