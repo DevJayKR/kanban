@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, UnprocessableEntityException } from '@
 import { PrismaService } from './prisma.service';
 import { Column, Tag, Ticket } from '@prisma/client';
 import { ColumnWithTickets } from 'src/utils/column-with-tickets.type';
+import { UpdateTicketDto } from 'src/controllers/dtos/update-ticket.dto';
 
 @Injectable()
 export class BoardService {
@@ -38,7 +39,12 @@ export class BoardService {
 							select: {
 								id: true,
 								order: true,
-								assignee: true,
+								assignee: {
+									select: {
+										id: true,
+										username: true,
+									},
+								},
 								info: true,
 							},
 							orderBy: {
@@ -134,6 +140,31 @@ export class BoardService {
 						tag: true,
 						dueTime: true,
 						dueDate: true,
+					},
+				},
+			},
+		});
+	}
+
+	async updateTicket(dto: UpdateTicketDto) {
+		await this.prisma.ticket.update({
+			where: {
+				id: dto.ticket.id,
+			},
+			data: {
+				assignee: {
+					connect: {
+						id: dto.assigneeId,
+					},
+				},
+				info: {
+					update: {
+						data: {
+							title: dto.title,
+							dueDate: dto.dueDate,
+							dueTime: dto.dueTime,
+							tag: dto.tag,
+						},
 					},
 				},
 			},
