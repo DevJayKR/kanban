@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { CustomValidator as CV } from 'src/utils/custom-validator.class';
 
 export class CreateColumnDto {
-	@IsNotEmpty()
-	@IsString()
+	@CV.IsNotEmpty()
+	@CV.IsString()
 	name: string;
 }

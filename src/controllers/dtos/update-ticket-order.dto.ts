@@ -1,21 +1,18 @@
 import { Ticket } from '@prisma/client';
-import { Exclude } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { CustomValidator as CV } from 'src/utils/custom-validator.class';
 
 export class UpdateTicketOrderDto {
-	@IsNumber()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsNumber()
 	ticketId: number;
 
-	@IsNumber()
-	@IsNotEmpty()
+	@CV.IsNotEmpty()
+	@CV.IsNumber()
 	toBe: number;
 
-	@IsOptional()
-	@IsNotEmpty()
-	@IsNumber()
+	@CV.IsOptional()
+	@CV.IsNumber()
 	toBeColumnId: number;
 
-	@Exclude()
 	ticket: Ticket;
 }
