@@ -3,7 +3,7 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 
-describe('AuthController (e2e)', () => {
+describe('[AuthController E2E TEST]', () => {
 	let app: INestApplication;
 	let at = null;
 	let rt = null;
@@ -15,14 +15,16 @@ describe('AuthController (e2e)', () => {
 		password,
 	};
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule({
 			imports: [AppModule],
 		}).compile();
 
 		app = moduleFixture.createNestApplication();
 		await app.init();
+	});
 
+	beforeEach(async () => {
 		dto.username = username;
 		dto.password = password;
 	});
@@ -178,8 +180,10 @@ describe('AuthController (e2e)', () => {
 		it('액세스토큰과 함께 로그아웃을 요청하면 204 상태코드를 반환해야한다.', () => {
 			return request(app.getHttpServer()).post('/auth/signout').set('Authorization', `Bearer ${at}`).expect(204);
 		});
+	});
 
-		afterAll(() => {
+	describe('[테스트 종료]', () => {
+		it('테스트 계정을 삭제한다.', () => {
 			return request(app.getHttpServer())
 				.delete('/user')
 				.set('Authorization', `Bearer ${at}`)
@@ -190,5 +194,9 @@ describe('AuthController (e2e)', () => {
 					expect(body.data.username).toEqual('test1234');
 				});
 		});
+	});
+
+	afterAll(async () => {
+		return await app.close();
 	});
 });
