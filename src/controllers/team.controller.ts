@@ -1,5 +1,5 @@
 import { Body, Controller, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
-import { TeamService } from 'src/services/team.service';
+import { TeamService } from '@services/team.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from '@prisma/client';
 import { CreateTeamDto } from './dtos/create-team.dto';

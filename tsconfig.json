@@ -9,13 +9,23 @@
 		"target": "ES2021",
 		"sourceMap": true,
 		"outDir": "./dist",
-		"baseUrl": "./",
+		"baseUrl": ".",
 		"incremental": true,
 		"skipLibCheck": true,
 		"strictNullChecks": false,
 		"noImplicitAny": false,
 		"strictBindCallApply": false,
 		"forceConsistentCasingInFileNames": false,
-		"noFallthroughCasesInSwitch": false
+		"noFallthroughCasesInSwitch": false,
+		"paths": {
+			"@controllers/*": ["src/controllers/*"],
+			"@services/*": ["src/services/*"],
+			"@modules/*": ["src/modules/*"],
+			"@helpers/*": ["src/helpers/*"],
+			"@configs/*": ["src/configs/*"],
+			"@utils/*": ["src/utils/*"],
+			"@filters/*": ["src/filters/*"],
+			"@entities/*": ["src/entities/*"]
+		}
 	}
 }

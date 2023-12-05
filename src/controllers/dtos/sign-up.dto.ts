@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { CustomValidator as CV } from 'src/utils/custom-validator.class';
+import { CustomValidator as CV } from '@utils/custom-validator.class';
 
 export class SignUpDto implements Prisma.UserCreateInput {
 	@CV.IsUsername()

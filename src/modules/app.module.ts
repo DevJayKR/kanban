@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { validationSchema } from '../configs/validation-schema';
+import { validationSchema } from '@configs/validation-schema';
 import { PrismaModule } from './prisma.module';
 import { AuthModule } from './auth.module';
 import { UserModule } from './user.module';
 import { ProvideModule } from './provide.module';
-import jwtConfiguration from 'src/configs/jwt.configuration';
+import jwtConfiguration from '@configs/jwt.configuration';
 import { TeamModule } from './team.module';
 import { BoardModule } from './board.module';
 

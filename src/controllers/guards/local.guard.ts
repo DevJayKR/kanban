@@ -1,9 +1,9 @@
-import { UserService } from 'src/services/user.service';
+import { UserService } from '@services/user.service';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { SignInDto } from '../dtos/sign-in.dto';
 import { validateOrReject } from 'class-validator';
-import { validationExceptionFactory } from 'src/utils/validation-exception.factory';
+import { validationExceptionFactory } from '@utils/validation-exception.factory';
 
 @Injectable()
 export class LocalGuard implements CanActivate {

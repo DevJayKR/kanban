@@ -1,10 +1,10 @@
-import { UserService } from 'src/services/user.service';
+import { UserService } from '@services/user.service';
 import { User } from '@prisma/client';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
-import jwtConfiguration from 'src/configs/jwt.configuration';
+import jwtConfiguration from '@configs/jwt.configuration';
 import { ConfigType } from '@nestjs/config';
 import { TokenPayload } from 'src/utils/token-payload.interface';
 

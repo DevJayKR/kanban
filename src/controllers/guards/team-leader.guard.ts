@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { TeamService } from 'src/services/team.service';
+import { TeamService } from '@services/team.service';
 
 @Injectable()
 export class TeamLeaderGuard implements CanActivate {
