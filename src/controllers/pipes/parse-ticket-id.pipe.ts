@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, PipeTransform } from '@nestjs/common';
-import { PrismaService } from 'src/services/prisma.service';
+import { PrismaService } from '@services/prisma.service';
 import { UpdateTicketOrderDto } from '../dtos/update-ticket-order.dto';
 
 @Injectable()

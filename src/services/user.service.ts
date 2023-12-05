@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { EncryptionHelper } from 'src/helpers/encryption.helper';
-import { PrismaService } from 'src/services/prisma.service';
+import { EncryptionHelper } from '@helpers/encryption.helper';
+import { PrismaService } from '@services/prisma.service';
 
 @Injectable()
 export class UserService {

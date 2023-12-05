@@ -1,10 +1,10 @@
 import { Logger, Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { TransformInterceptor } from 'src/controllers/interceptors/transform.interceptor';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
-import { PrismaExceptionFilter } from 'src/filters/prisma-exception.filter';
-import { ValidationExceptionFilter } from 'src/filters/validation-exception.filter';
-import { validationExceptionFactory } from 'src/utils/validation-exception.factory';
+import { TransformInterceptor } from '@controllers/interceptors/transform.interceptor';
+import { HttpExceptionFilter } from '@filters/http-exception.filter';
+import { PrismaExceptionFilter } from '@filters/prisma-exception.filter';
+import { ValidationExceptionFilter } from '@filters/validation-exception.filter';
+import { validationExceptionFactory } from '@utils/validation-exception.factory';
 
 @Module({
 	providers: [

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { BoardController } from 'src/controllers/board.controller';
-import { BoardService } from 'src/services/board.service';
+import { BoardController } from '@controllers/board.controller';
+import { BoardService } from '@services/board.service';
 import { PrismaModule } from './prisma.module';
-import { TeamService } from 'src/services/team.service';
+import { TeamService } from '@services/team.service';
 
 @Module({
 	imports: [PrismaModule],

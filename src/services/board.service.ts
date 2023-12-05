@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, UnprocessableEntityException } from '@
 import { PrismaService } from './prisma.service';
 import { Column, Tag, Ticket } from '@prisma/client';
 import { ColumnWithTickets } from 'src/utils/column-with-tickets.type';
-import { UpdateTicketDto } from 'src/controllers/dtos/update-ticket.dto';
+import { UpdateTicketDto } from '@controllers/dtos/update-ticket.dto';
 
 @Injectable()
 export class BoardService {

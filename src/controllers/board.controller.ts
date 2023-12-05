@@ -1,17 +1,17 @@
 import { Body, Controller, Param, ParseIntPipe, Post, UseGuards, Get, Patch, Delete, Put } from '@nestjs/common';
 import { CreateColumnDto } from './dtos/create-column.dto';
 import { AtGuard } from './guards/at.guard';
-import { BoardService } from 'src/services/board.service';
+import { BoardService } from '@services/board.service';
 import { TeamMemberGuard } from './guards/team-member.guard';
 import { UpdateColumnOrderDto } from './dtos/update-column-order.dto';
 import { CreateTicketDto } from './dtos/create-ticket.dto';
 import { ParseColumnIdPipe } from './pipes/parse-column-id.pipe';
-import { ParseTicketIdPipe } from './pipes/parse.ticket-id.pipe';
+import { ParseTicketIdPipe } from './pipes/parse-ticket-id.pipe';
 import { UpdateTicketOrderDto } from './dtos/update-ticket-order.dto';
 import { UpdateColumnDto } from './dtos/update-column.dto';
 import { TeamLeaderGuard } from './guards/team-leader.guard';
 import { DeleteColumnDto } from './dtos/delete-column.dto';
-import { ColumnWithTickets } from 'src/utils/column-with-tickets.type';
+import { ColumnWithTickets } from '@utils/column-with-tickets.type';
 import { UpdateTicketDto } from './dtos/update-ticket.dto';
 
 @Controller('board')
