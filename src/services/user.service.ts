@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { EncryptionHelper } from '@helpers/encryption.helper';
 import { PrismaService } from '@services/prisma.service';
 
@@ -59,5 +59,13 @@ export class UserService {
 		}
 
 		return user;
+	}
+
+	async deleteUser(user: User) {
+		return await this.prisma.user.delete({
+			where: {
+				id: user.id,
+			},
+		});
 	}
 }
