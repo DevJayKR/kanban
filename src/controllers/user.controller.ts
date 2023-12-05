@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, UseGuards } from '@nestjs/common';
 import { UserService } from '@services/user.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { AtGuard } from './guards/at.guard';
@@ -34,5 +34,12 @@ export class UserController {
 				teamLeads: true,
 			},
 		);
+	}
+
+	@Delete()
+	@UseGuards(AtGuard)
+	@Serializer(UserEntity)
+	async deleteUser(@CurrentUser() user: User) {
+		return await this.userService.deleteUser(user);
 	}
 }
